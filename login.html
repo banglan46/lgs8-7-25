@@ -504,7 +504,7 @@
             
             try {
                 // Panggil Netlify Function untuk login
-                const tokenResponse = await fetch('/.netlify/functions/login', {
+                const tokenResponse = await fetch('/.netlify/functions/login.js', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
