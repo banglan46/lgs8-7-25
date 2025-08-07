@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/LimitedShop.png" type="image/png">
+    <title>Kebijakan Akun & Ketentuan Layanan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Header Modern */
+        .modern-header {
+            background: white;
+			padding: 0 5%;
+            padding: 0 5%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-container img {
+            height: 45px;
+            border-radius: 8px;
+        }
+        
+        .brand-name {
+            color: black;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+			
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-btn {
+            
+            color: black;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            text-decoration: none;
+        }
+        
+        .nav-btn:hover {
+            
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.login-btn {
+            
+        }
+        
+        .nav-btn.login-btn:hover {
+			color : #2563eb;
+            
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        
+        /* Modal Styles */
+        #myImg {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        #myImg:hover {opacity: 0.7;}
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.9);
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+        
+        .modal-content, #caption {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+        
+        @keyframes zoom {
+            from {transform:scale(0)}
+            to {transform:scale(1)}
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        @media only screen and (max-width: 700px){
+            .modal-content {
+                width: 100%;
+            }
+        }
+        
+        .policy-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .policy-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .card-header i {
+            font-size: 1.8rem;
+        }
+        
+        .card-content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+        }
+        
+        .section ul {
+            display: block;
+            padding-left: 25px;
+            padding-right: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .section ul li {
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+        
+        .highlight {
+            background: #e3f2fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .update-date {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #7f8c8d;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        img {
+            display: block;
+            margin: auto;
+            width: 50%;
+        }
+        
+        @media only screen and (max-width: 768px) {
+            .policy-container {
+                padding: 20px 15px;
+            }
+            
+            .modal-content {
+                width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card-content {
+                padding: 20px;
+            }
+            
+            .card-header {
+                font-size: 1.2rem;
+            }
+            
+            .section h3 {
+                font-size: 1.2rem;                    
+            }
+            
+            /* Responsive Header */
+            .mobile-menu-btn {
+                display: block;
+				color: black;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 65px;
+                right: -100%;
+                flex-direction: column;
+                background: white;
+                width: 70%;
+                height: calc(100vh - 80px);
+                transition: 0.4s;
+                padding: 40px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 15px;
+            }
+        }
+        
+        @media only screen and (max-width: 480px) {
+            .brand-name {
+                font-size: 1.3rem;
+            }
+            
+            .logo-container img {
+                height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Modern dengan Menu -->
+    <header class="modern-header">
+        <div class="header-container">
+            <a href="index.html" class="logo-container">
+                <img src="img/LimitedShop.png" alt="LimitedShop Logo">
+                <div class="brand-name">LimitedShop</div>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-btn">
+                    <i class="fas fa-home"></i> Beranda
+                </a>
+                <a href="tutorial.html" class="nav-btn">
+                    <i class="fas fa-book"></i> Tutorial
+                </a>
+                <a href="inbox.html" class="nav-btn login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="policy-container">
+        <div class="header">
+            <h1>Kebijakan Akun Game</h1>
+            
+        </div>
+        
+        <div class="policy-card">
+            <div class="card-header">
+                <i class="fas fa-user-shield"></i>
+                <h2>Kebijakan Akun</h2>
+            </div>
+            
+            <div class="card-content">
+                <div class="section">
+                    <h3>1. Akun Game</h3>
+                    <p>Kami mencatat data Akun Game pembeli di iTemku sejak Akun dibuat</p>
+                    <ul>
+                        <li><strong>Informasi akun:</strong> Alamat email Game, password, anda akan mendapatkan setelah membeli cek <a href="https://www.itemku.com/riwayat-pembelian"> Disini</a></li>
+                        <li><strong>Data penggunaan:</strong> Anda menggunakan layanan kami, termasuk akses inbox mail.tm, riwayat aktivitas mail.tm, infomasi email Akun Game anda dan aktivitas disimpan ke devices pengguna/pribadi, tidak diserver <strong>LimitedShop</strong>.</li>
+                        <li><strong>Konten email:</strong> Email hanya <strong>Menerima</strong> inbox melalui sistem client kami dan <strong>Password</strong> fix tidak dapat dirubah dari system Mail.tm cek <a href="https://mail.tm/en/faq/">Disini</a> pada point Akhir.</li>
+                        <li><strong>Temp Email:</strong> Email berbasis dari <a href="https://mail.tm/">mail.tm</a> kami sebagai penjual dan pembeli menyetujui mail.tm <a href="https://mail.tm/en/privacy/">Policy</a></li>
+                        <li><strong>Pertanyaan:</strong> memberikan dukungan seperti pertanyaan lewat chat dari produk yang dibeli</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h3>2. Perlindungan Akun</h3>
+                    <p>Kami menginformasikan tentang perlindungan Akun Game:</p>
+                    <ul>
+                        <li>Sistem Kami hanya menjamin keamanan akun selama masih menggunakan email yang dibeli.</li>
+                        <li><strong>Mengganti Alamat Email</strong> akun game sama saja sudah melepas tanggung jawab <strong>Penjual</strong> dari Akun Hilang atau lupa, sepenuhnya ditanggung <strong>Pembeli</strong>.</li>
+                        <li>Kami tetap akan menyimpan <strong>ID(Server)</strong> Akun Game <strong>(Jika Ada)</strong>, selama periode yang diperlukan untuk memenuhi kewajiban hukum.</li>
+                        <li>Menerima tanggung jawab penuh atas semua aktivitas yang terjadi di bawah akun Anda <strong>(Sesuai poin Pertama dan kedua)</strong>.</li>
+                        <li>Menjaga kerahasiaan informasi akun Anda.</li>
+                    </ul>
+                    <div class="highlight">
+                        <p><i class="fas fa-info-circle"></i> Kami tidak menjual atau membagikan data Akun game pribadi Anda kepada pihak manapun.</p>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>3. Perlindungan Data</h3>
+                    <p>Kami menerapkan langkah-langkah keamanan teknis yang sesuai untuk melindungi Akun Game Anda:</p>
+                    <ul>
+                        <li>Enkripsi data dalam transit dan saat penyimpanan</li>
+                        <li>Kontrol akses ketat untuk data sensitif</li>
+                        <li>Audit keamanan berkala</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h3>4. Penyimpanan Data</h3>
+                    <p>Kami menyimpan data Anda selama akun Anda aktif dan selama periode yang diperlukan untuk memenuhi kewajiban hukum.</p>
+                    <p>Setelah Email pada Akun game Diganti, kami akan mempertahankan data Serti <strong>ID(Server)</strong> selama 30 hari sebelum menghapusnya secara permanen.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="update-date">
+            <p>Dokumen ini terakhir diperbarui pada 7 Juni 2025</p>
+        </div>
+        
+        <div class="footer">
+            <p>Jika Anda memiliki pertanyaan tentang Kebijakan Privasi atau Ketentuan Layanan kami, silakan hubungi kami lewat produk yang dibeli <a href="https://www.itemku.com/riwayat-pembelian">iTemku</a></p>
+            <p>© 2025 Limited Shop. Hak Cipta Dilindungi.</p>
+        </div>
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+            <div id="caption"></div>
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript untuk menu mobile
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            
+            // Ganti ikon menu
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Tutup menu mobile saat salah satu link diklik
+        const navLinks = document.querySelectorAll('.nav-menu .nav-btn');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+</html>

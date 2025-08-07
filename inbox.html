@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox - Mail.tm Client</title>
+	<link rel="icon" href="img/iconsinbox.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #f5f7fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: white;
+			background-size: 800% 800%;
+            color: black;
+			min-height: 7vh;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			backdrop-filter: blur(10px);
+            margin-bottom: 5px;
+		
+        }
+	
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 24px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        
+        .app-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 260px;
+			height: 100vh
+            background: white;
+            border-right: 1px solid #e1e5eb;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .compose-btn {
+            background: gray;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            margin: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+            margin-bottom: 15px;
+			
+        }
+        
+        .compose-btn:hover {
+            background: #2980b9;
+        }
+		
+		.btn {
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 7px;
+			margin-top: 15 px;
+            margin-bottom: 15px;
+            padding: 8px 15px;
+            
+            font-weight: 600;
+			font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+			box-shadow: 0 10px 13px rgba(52, 152, 219, 0.3);
+        }
+		
+		.btn:hover {
+            transform: translateY(-1px);
+			color: #6ccacc;
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+		
+		.btn:active {
+            transform: translateY(1px);
+			backgroud: black
+        }
+        
+        .menu {
+            list-style: none;
+			cursor: pointer;
+            padding: 0 20px;
+        }
+		
+        
+        .menu li {
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .menu li:hover, .menu li.active {
+            background: linear-gradient(135deg, #1a2a6c, #53aab0, #1b332c);
+            background-size: 800% 800%;
+            animation: gradientBG 15s ease infinite;//background: #e3f2fd;
+            color: white; //color: #3498db;
+			min-height: 7vh;
+			font-weight: 700;
+			align-items: center;
+            justify-content: center;
+			cursor: pointer;
+        }
+		
+		@keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .menu li i {
+            width: 24px;
+        }
+        
+        .badge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+            margin-left: auto;
+        }
+        
+        .inbox-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .inbox-controls {
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #e1e5eb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-bar {
+            flex: 1;
+            background: #f5f7fa;
+            border-radius: 20px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            width: 100%;
+            margin-left: 10px;
+            outline: none;
+        }
+        
+        .refresh-btn {
+            background: black;
+			color : black;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .refresh-btn:hover {
+            background: #e1e5eb;
+        }
+        
+        .email-list {
+            flex: 1;
+            overflow-y: auto;
+            background: white;
+        }
+        
+        .email-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .email-item:hover {
+            background: #f9fbfd;
+        }
+        
+        .email-item.unread {
+            background: #f0f7ff;
+            border-left: 4px solid #3498db;
+        }
+        
+        .email-item.active {
+            background: #e3f2fd;
+        }
+        
+        .email-checkbox {
+            margin-right: 15px;
+        }
+        
+        .email-star {
+            color: #ddd;
+            margin-right: 15px;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+        
+        .email-star.starred {
+            color: #f1c40f;
+        }
+        
+        .email-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .email-sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .email-subject {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .email-preview {
+            color: #7f8c8d;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .email-time {
+            color: #7f8c8d;
+            font-size: 14px;
+            min-width: 70px;
+            text-align: right;
+            margin-left: 15px;
+        }
+        
+        .email-detail {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 60%;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .email-detail.active {
+            display: block;
+        }
+        
+        .email-detail-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .back-btn {
+            background: #f5f7fa;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .back-btn:hover {
+            background: #e1e5eb;
+        }
+        
+        .email-detail-header h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .email-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .email-body {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        
+        .email-actions {
+            display: flex;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .action-btn {
+            background: #ecf0f1;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .action-btn:hover {
+            background: #d5dbdb;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .status-message.loading {
+            background: #cce5ff;
+            color: #004085;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+		
+		img { 
+			border-radius: 20%;
+		}
+        
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .compose-btn span, .menu li span, .badge {
+                display: none;
+            }
+            
+            .compose-btn {
+                padding: 12px;
+            }
+            
+            .menu li {
+                justify-content: center;
+            }
+            
+            .email-detail {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            
+            .user-email {
+                display: none;
+            }
+            
+            .sidebar {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-envelope"></i>
+            <h1>Limited Shop</h1>
+        </div>
+        
+        <div class="user-info">
+            <div class="avatar" id="user-avatar">U</div>
+            <div class="user-email" id="user-email">user@example.com</div>
+            <button class="logout-btn" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+    
+    <div class="app-container">
+        <div class="sidebar">
+            <ul class="menu">
+             <li id="refresh-btn" class="btn" >
+                <i class="fa fa-refresh" style="font-size:24px"></i><span>Refresh</span>
+				</li>
+            </ul>
+            <ul class="menu">
+                <li id="rodukS-btn" class="active">                   
+                <i class="fa-solid fa-shop"></i><span>Beranda</span>
+                </li>          
+            </ul>
+			<ul class="menu">
+				<li class="menu" id="limtdshpML-btn">
+				<img width="28" height="28" src="img/ML.png" alt="mobile-legends-bb"/><span><strong>Mobile Legends</strong></span>
+				</li> 
+            </ul>
+			<ul class="menu">
+				<li class="menu" id="limtdshpOP-btn">
+				<img width="28" height="28" src="img/OPBR.png" alt="mobile-legends-bb"/><span><strong>OnePiece : BR</strong></span>
+				</li> 
+            </ul>
+        </div>
+        
+        <div class="inbox-container">
+            <div class="inbox-controls">
+            </div>
+            
+            <div class="email-list" id="email-list">
+                <div class="status-message loading" id="loading-message">
+                    <div class="loader"></div> Memuat email...
+                </div>
+                <!-- Email akan dimuat di sini -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="email-detail" id="email-detail">
+        <div class="email-detail-header">
+            <button class="back-btn" id="back-btn">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
+            <h2 id="email-subject">Subject Email</h2>
+            <div class="email-meta">
+                <div>
+                    Dari: <span id="email-from">pengirim@domain.com</span>
+                </div>
+                <div>
+                    Diterima: <span id="email-date">12 Jun 2023 10:30 AM</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="email-body" id="email-body">
+            <p>Konten email akan ditampilkan di sini setelah Anda memilih email dari daftar.</p>
+        </div>
+        
+    </div>
+
+    <script>
+        // DOM Elements
+        const emailList = document.getElementById('email-list');
+        const emailDetail = document.getElementById('email-detail');
+        const logoutBtn = document.getElementById('logout-btn');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const backBtn = document.getElementById('back-btn');
+        const loadingMessage = document.getElementById('loading-message');
+        const userAvatar = document.getElementById('user-avatar');
+        const userEmail = document.getElementById('user-email');
+        const unreadCount = document.getElementById('unread-count');
+		const limtdshpMLBtn = document.getElementById('limtdshpML-btn');
+		const limtdshpOPBtn = document.getElementById('limtdshpOP-btn');
+		const produkSBtn = document.getElementById('rodukS-btn');
+        
+        // State variables
+        let authToken = localStorage.getItem('mailtm_token');
+        let currentAccount = JSON.parse(localStorage.getItem('mailtm_account'));
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!authToken || !currentAccount) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Display account info
+            userAvatar.textContent = currentAccount.address.charAt(0).toUpperCase();
+            userEmail.textContent = currentAccount.address;
+            
+            // Load emails
+            loadEmails();
+            
+            // Event listeners
+            logoutBtn.addEventListener('click', logout);
+            refreshBtn.addEventListener('click', loadEmails);
+            backBtn.addEventListener('click', () => {
+                emailDetail.classList.remove('active');
+                history.back();
+            });
+			limtdshpMLBtn.addEventListener('click', limtdshpML);
+			limtdshpOPBtn.addEventListener('click', limtdshpOP);
+			produkSBtn.addEventListener('click', limtdshpAll);
+        });
+        
+        // Load emails from Mail.tm via Netlify Function
+        async function loadEmails() {
+            loadingMessage.style.display = 'flex';
+            emailList.innerHTML = '';
+            
+            try {
+                // Get messages via Netlify Function
+                const messagesResponse = await fetch('/.netlify/functions/getMessages', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (!messagesResponse.ok) {
+                    const errorData = await messagesResponse.json();
+                    throw new Error(errorData.error || 'Gagal mengambil email');
+                }
+                
+                const messagesData = await messagesResponse.json();
+                
+                if (messagesData['hydra:totalItems'] === 0) {
+                    loadingMessage.textContent = 'Tidak ada email di inbox Anda';
+                    loadingMessage.className = 'status-message';
+                    return;
+                }
+                
+                loadingMessage.style.display = 'none';
+                renderEmails(messagesData['hydra:member']);
+                
+                // Update unread count
+                const unreadEmails = messagesData['hydra:member'].filter(email => !email.seen);
+                unreadCount.textContent = unreadEmails.length;
+                
+            } catch (error) {
+                loadingMessage.textContent = error.message;
+                loadingMessage.className = 'status-message error';
+            }
+        }
+        
+        // Render emails to the list
+        function renderEmails(emails) {
+            emails.forEach(email => {
+                const emailItem = document.createElement('div');
+                emailItem.className = `email-item ${email.seen ? '' : 'unread'}`;
+                emailItem.dataset.id = email.id;
+                
+                const emailDate = new Date(email.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const senderName = email.from.name || email.from.address.split('@')[0];
+                
+                emailItem.innerHTML = `
+                    <div class="email-checkbox">
+                        <input type="checkbox">
+                    </div>
+                    <i class="fas fa-star email-star"></i>
+                    <div class="email-content">
+                        <div class="email-sender">${senderName}</div>
+                        <div class="email-subject">${email.subject || '(No Subject)'}</div>
+                        <div class="email-preview">${email.intro || 'Tidak ada pratinjau'}</div>
+                    </div>
+                    <div class="email-time">${emailDate}</div>
+                `;
+                
+                emailItem.addEventListener('click', async function() {
+                    // Set active state
+                    document.querySelectorAll('.email-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Load email details
+                    await loadEmailDetails(email.id);
+                });
+                
+                // Star interaction
+                const star = emailItem.querySelector('.email-star');
+                star.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('starred');
+                });
+                
+                emailList.appendChild(emailItem);
+            });
+        }
+        
+        // Load and display email details via Netlify Function
+        async function loadEmailDetails(emailId) {
+            try {
+                // Fetch email details via Netlify Function
+                const response = await fetch(`/.netlify/functions/getMessage?id=${emailId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Gagal memuat detail email');
+                }
+                
+                const emailData = await response.json();
+                
+                // Render email details
+                renderEmailDetails(emailData);
+                
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+        
+		function convertTextToClickable(text) {
+			const urlRegex = /(https?:\/\/[^\s]+)/g;
+			const linked = text.replace(urlRegex, function(url) {
+				const maxLength = 50;
+				let displayUrl = url;
+				if (url.length > maxLength) {
+					// Ambil domain dan awal path
+					const parsed = new URL(url);
+					const domain = parsed.hostname;
+					const path = parsed.pathname.length > 1 ? parsed.pathname.split('/').slice(1, 3).join('/') : '';
+					displayUrl = `${parsed.protocol}//${domain}/${path}...`;
+				}
+				return `<a href="${url}" target="_blank" style="color:#3498db;">${displayUrl}</a>`;
+			});
+			return linked.replace(/\\n/g, "<br>");
+		}
+
+        // Render email details
+        function renderEmailDetails(email) {
+            const emailDate = new Date(email.createdAt).toLocaleString();
+            const senderInfo = email.from.name ? 
+                `${email.from.name} <${email.from.address}>` : email.from.address;
+            
+            document.getElementById('email-subject').textContent = email.subject || '(No Subject)';
+            document.getElementById('email-from').textContent = senderInfo;
+            document.getElementById('email-date').textContent = emailDate;
+            
+            // Render email body
+            let emailBody;
+            if (email.text) {
+                // Basic formatting for plain text emails
+                emailBody = `<div style="white-space: pre-wrap;">${convertTextToClickable(email.text)}</div>`;
+            } else if (email.html) {
+                // For HTML emails, we need to sanitize and display
+                // IMPORTANT: In a production app, you should sanitize HTML to prevent XSS attacks
+                emailBody = email.html;
+            } else if (email.intro) {
+                emailBody = `<p>${email.intro}</p>`;
+            } else {
+                emailBody = '<p>Tidak ada konten yang tersedia untuk email ini.</p>';
+            }
+            
+            document.getElementById('email-body').innerHTML = emailBody;
+            emailDetail.classList.add('active');
+            history.pushState({ page: 'email-detail' }, '', '#email-detail');
+        }
+        
+        // Compose new email
+        function composeEmail() {
+            alert('');
+        }
+		// Tombol samping Belanja
+		function limtdshpML () { 
+            window.open("https://www.itemku.com/t/limited-shop?item=mobile-legends");
+        }
+		// Tombol samping Belanja
+        function limtdshpOP () { 
+			window.open("https://www.itemku.com/t/limited-shop?item=one-piece-bounty-rush");
+		}
+        // Tombol samping Belanja
+        function limtdshpAll () { 
+			window.location.href = 'index.html';
+		}
+        // Logout from account
+        function logout() {
+            localStorage.removeItem('mailtm_account');
+            localStorage.removeItem('mailtm_token');
+            window.location.href = 'index.html';
+        }
+    
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.page === 'email-detail') {
+                emailDetail.classList.add('active');
+            } else {
+                emailDetail.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

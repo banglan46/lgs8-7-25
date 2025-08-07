@@ -1,0 +1,587 @@
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/LimitedShop.png" type="image/png">
+    <title>Tutorial ganti Email & Password</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+
+        /* Header Modern */
+        .modern-header {
+            background: white;
+            padding: 0 5%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-container img {
+            height: 45px;
+            border-radius: 8px;
+        }
+        
+        .brand-name {
+            color: black;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-btn {
+            
+            color: black;
+            border: none;
+            
+            
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            text-decoration: none;
+        }
+        
+        .nav-btn:hover {
+            
+            transform: translateY(-2px);
+            
+        }
+        
+        .nav-btn.login-btn {
+            
+        }
+        
+        .nav-btn.login-btn:hover {
+            color: #2980b9;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        
+        /* Modal Styles */
+        #myImg {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        #myImg:hover {opacity: 0.7;}
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.9);
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+        
+        .modal-content, #caption {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+        
+        @keyframes zoom {
+            from {transform:scale(0)}
+            to {transform:scale(1)}
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        @media only screen and (max-width: 700px){
+            .modal-content {
+                width: 100%;
+            }
+        }
+        
+        .policy-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .policy-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .card-header i {
+            font-size: 1.8rem;
+        }
+        
+        .card-content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+        }
+        
+        .section ul {
+            display: block;
+            padding-left: 25px;
+            padding-right: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .section ul li {
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+        
+        .highlight {
+            background: #e3f2fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .update-date {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #7f8c8d;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        img {
+            display: block;
+            margin: auto;
+            width: 50%;
+        }
+        
+        .tutorial-image {
+            width: 100%;
+            max-width: 300px;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .tutorial-image:hover {
+            transform: scale(1.03);
+        }
+        
+        @media only screen and (max-width: 768px) {
+            .policy-container {
+                padding: 20px 15px;
+            }
+            
+            .modal-content {
+                width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card-content {
+                padding: 20px;
+            }
+            
+            .card-header {
+                font-size: 1.2rem;
+            }
+            
+            .section h3 {
+                font-size: 1.2rem;                    
+            }
+            
+            /* Responsive Header */
+            .mobile-menu-btn {
+                display: block;
+				color: black;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 65px;
+                right: -100%;
+                flex-direction: column;
+                background: white;
+                width: 70%;
+                height: calc(100vh - 80px);
+                transition: 0.4s;
+                padding: 40px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 15px;
+            }
+        }
+        
+        @media only screen and (max-width: 480px) {
+            .brand-name {
+                font-size: 1.3rem;
+            }
+            
+            .logo-container img {
+                height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Modern dengan Menu -->
+    <header class="modern-header">
+        <div class="header-container">
+            <a href="index.html" class="logo-container">
+                <img src="img/LimitedShop.png" alt="LimitedShop Logo">
+                <div class="brand-name">LimitedShop</div>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-btn">
+                    <i class="fas fa-home"></i> Beranda
+                </a>
+                <a href="policy.html" class="nav-btn">
+                    <i class="fas fa-user-shield"></i> Kebijakan Akun
+                </a>
+                <a href="inbox.html" class="nav-btn login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="policy-container">
+        <div class="header">
+            <h1>Cara Mengganti Email Akun Game</h1>
+            <p>Terakhir diperbarui: 7 Juni 2025</p>
+        </div>
+
+        <div class="policy-card">
+            <div class="card-header">
+                <i class="fas fa-file-contract"></i>
+                <h2>Cara Mengganti email akun di Game</h2>
+            </div>
+            
+            <div class="card-content">
+                <div class="section">
+                    <h3>1. Loginkan Akun email (Mobile Legend)</h3>
+                    <ul>
+                        <div class="highlight">
+                            <p><i class="fas fa-exclamation-triangle"></i> PERHATIAN sebelum mengganti ada baiknya membaca ketentuan Akun <a href="policy.html">Disini</a>, dengan mengganti Email Anda setuju pada Point-point Ketentuan Akun.</p>
+                        </div>
+                        <li><a href="index.html">Login</a> Langsung</li>
+                        <img id="myImg" src="img/limitedshop.jpg" class="tutorial-image">
+                        <li>atau Login di <a href="https://mail.tm/en/">Mail.tm</a></li>
+                        <img id="myImg1" src="img/loginMail-tm.png" class="tutorial-image">
+                        <li>Masukan Email dan password yang dibeli</li>
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h3>2. Buka Game</h3>
+                    <p>Sudah didalam Game : ikuti panah atau Kotak Merah</p>
+                    <ul>
+                        <li>1. Masuk ke Profil Akun Pada Mobile Legend</li>
+                        <img id="myImg2" src="img/profil-ml.png" class="tutorial-image">
+                        <li>2. Ke Pengaturan Akun</li>
+                        <img id="myImg3" src="img/pengaturan.png" class="tutorial-image">
+                        <li>3. Ke Pusat Akun (ada diatas menu Ganti Akun)</li>
+                        <img id="myImg4" src="img/pusatakun.png" class="tutorial-image">
+                        <li>4. Ganti Email</li>
+                        <img id="myImg5" src="img/ganti-email.png" class="tutorial-image">
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h3>3. Persiapan untuk mengganti Email</h3>
+                    <p>Anda akan mempertahankan kepemilikan akun menggunakan Email Pribadi pada Akun Game.</p>
+                    <ul>
+                        <li>1. Pada Menu Ganti Email klik [ Kirim ] untuk mendapatkan kode verifikasi</li>
+                        <img id="myImg6" src="img/kirim-kode.png" class="tutorial-image">
+                        <li>2. Buka inbox Email untuk melihat Kode Verifikasi <a href="inbox.html">Disini</a></li>
+                        <img id="myImg7" src="img/kode-limitedshop.png" class="tutorial-image">
+                        <img id="myImg8" src="img/kode-verif1.png" class="tutorial-image">
+                        <li>3. Masukan kode verifikasi ke mobile legend</li>
+                        <img id="myImg9" src="img/input-kodeML.png" class="tutorial-image">
+                        <li>4. Setelah berhasil memasukan kode verifikasi lanjut masukan Email Pengganti</li>
+                        <li>5. Masukan kode verifikasi lagi yang dikirim ke Email Pengganti</li>
+                        <img id="myImg10" src="img/inpt-newemail.jpg" class="tutorial-image">
+                        <li><strong>Perhatian jika Email pengganti mengunakan Gmail, cek Kode Verifikasi ke menu Spam atau Sampah jika tidak masuk ke Inbox Gmail</strong></li>
+                        <img id="myImg11" src="img/cek-kodegmail.png" class="tutorial-image">
+                        <img id="myImg12" src="img/kode-gmail.png" class="tutorial-image">
+                        <li>6. Berhasil Mengganti Email</li>
+                        <img id="myImg13" src="img/done-change-email.png" class="tutorial-image">
+                    </ul>
+                </div>
+                
+                <div class="section">
+                    <h3>4. Persiapan merubah Password Akun Game</h3>
+                    <ul>
+                        <li>Masuk lagi ke Pusat Akun lalu Pilih Ganti Kata Sandi Moonton.</li>
+                        <img id="myImg14" src="img/ganti-password.png" class="tutorial-image">
+                        <li>Klik Kirim Kode dan masukan Kode verifikasi yang dikirim ke email sekarang terhubung pada Akun.</li>
+                        <img id="myImg15" src="img/enter-kode-pw.png" class="tutorial-image">
+                        <li>Terakhir masukan <strong>Password Baru</strong> Gunakan Huruf Besar minimal 1, dan Konfirmasi.</li>
+                        <img id="myImg16" src="img/newpassword.png" class="tutorial-image">
+                    </ul>                   
+                </div>
+                
+                <div class="section">
+                    <h3>5. Pembatasan Tanggung Jawab Kami</h3>
+                    <p>Layanan kami disediakan "apa adanya".</p>
+                    <p>Kami tidak bertanggung jawab atas:</p>
+                    <ul>
+                        <li>Kerugian tidak langsung, insidental, atau konsekuensial</li>
+                        <li>Kehilangan data atau lupa</li>
+                        <li>Gangguan layanan di luar kendali kami dan sudah sepenuhnya ditanggung Pembeli</li>
+                    </ul>
+                    <div class="highlight">
+                        <p><i class="fas fa-exclamation-triangle"></i> Kami akan melakukan upaya terbaik untuk menjaga ketersediaan layanan, tetapi tidak dapat menjamin uptime 100%.</p>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>6. Perubahan Ketentuan</h3>
+                    <p>Kami dapat memperbarui ketentuan ini dari waktu ke waktu. Perubahan signifikan akan diberitahukan melalui email atau pemberitahuan dalam aplikasi.</p>
+                    <p>Dengan terus menggunakan layanan setelah perubahan, Anda setuju untuk terikat oleh ketentuan yang diperbarui.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="update-date">
+            <p>Dokumen ini terakhir diperbarui pada 7 Juni 2025</p>
+        </div>
+        
+        <div class="footer">
+            <p>Jika Anda memiliki pertanyaan tentang Kebijakan Privasi atau Ketentuan Layanan kami, silakan hubungi kami lewat produk yang dibeli <a href="https://www.itemku.com/riwayat-pembelian">iTemku</a></p>
+            <p>© 2025 Limited Shop. Hak Cipta Dilindungi.</p>
+        </div>
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+            <div id="caption"></div>
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript untuk menu mobile
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            
+            // Ganti ikon menu
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Tutup menu mobile saat salah satu link diklik
+        const navLinks = document.querySelectorAll('.nav-menu .nav-btn');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+        
+        // JavaScript untuk modal gambar
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("img01");
+        const captionText = document.getElementById("caption");
+        const closeBtn = document.getElementsByClassName("close")[0];
+        
+        // Fungsi untuk membuka modal
+        function openModal(imgElement) {
+            modal.style.display = "block";
+            modalImg.src = imgElement.src;
+            captionText.innerHTML = imgElement.alt || "Gambar Tutorial";
+        }
+        
+        // Menambahkan event listener untuk semua gambar tutorial
+        const tutorialImages = document.querySelectorAll('img[id^="myImg"]');
+        tutorialImages.forEach(img => {
+            img.onclick = function() {
+                openModal(this);
+            };
+        });
+        
+        // Menutup modal saat tombol close diklik
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // Menutup modal saat mengklik di luar gambar
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

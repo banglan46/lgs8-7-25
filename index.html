@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limited Shop - Belanja Modern dengan Checkout WhatsApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+	<link rel="icon" href="img/LimitedShop.png" type="image/png">
+    <style>
+        .cart-sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header dengan Logo dan Menu -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo dan Nama -->
+                <div class="flex items-center space-x-3">
+                    <img src="img/limitedshop.png" alt="ShopHub Logo" class="h-10 w-10 rounded-lg">
+                    <h1 class="text-2xl font-bold text-gray-900">Limited Shop</h1>
+                </div>
+
+                <!-- Menu Navigasi -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="inbox.html" class="text-gray-700 hover:text-blue-600 hover:-translate-y-0.5 font-medium">Login Email</a>
+                    <a href="https://www.itemku.com/t/limited-shop" class="text-gray-700 hover:text-blue-600 hover:-translate-y-0.5 font-medium">Produk</a>
+                    <a href="policy.html" class="text-gray-700 hover:text-blue-600 hover:-translate-y-0.5 font-medium">Ketentuan Akun</a>
+                    <a href="tutorial.html" class="text-gray-700 hover:text-blue-600 hover:-translate-y-0.5 font-medium">Tutorial</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="p-2 text-gray-600 hover:text-gray-900">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+
+                <!-- User Actions -->
+                <div class="flex items-center space-x-4">
+                    <a href="inbox.html" class="p-2 text-gray-600 hover:text-blue-600">
+                        <i data-lucide="user" class="h-7 w-7"></i>
+                    </a>
+                    <button id="cartBtn" class="relative p-2 text-gray-600 hover:text-blue-600">
+                        <i data-lucide="shopping-cart" class="h-6 w-6"></i>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col space-y-2">
+                    <a href="inbox.html" class="text-gray-700 hover:text-blue-600 font-medium py-2">Login Email</a>
+                    <a href="https://www.itemku.com/t/limited-shop" class="text-gray-700 hover:text-blue-600 font-medium py-2">Produk</a>
+                    <a href="policy.html" class="text-gray-700 hover:text-blue-600 font-medium py-2">Ketentuan Akun</a>
+                    <a href="tutorial.html" class="text-gray-700 hover:text-blue-600 font-medium py-2">Tutorial</a>
+                    
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Sidebar (sama seperti sebelumnya) -->
+    <div id="cartSidebar" class="cart-sidebar fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-lg transform translate-x-full z-50">
+        <div class="h-full flex flex-col">
+            <div class="flex items-center justify-between p-4 border-b">
+                <h2 class="text-lg font-semibold">Keranjang Belanja</h2>
+                <button id="closeCart" class="text-gray-500 hover:text-gray-700">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+            
+            <div id="cartItems" class="flex-1 overflow-y-auto p-4">
+                <p class="text-center text-gray-500 mt-8">Keranjang Anda kosong</p>
+            </div>
+            
+            <div id="cartFooter" class="border-t p-4 hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold">Total:</span>
+                    <span id="cartTotal" class="text-lg font-bold price-label">Rp 0</span>
+                </div>
+                <button id="checkoutBtn" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 flex items-center justify-center">
+                    <i data-lucide="message-circle" class="mr-2 h-4 w-4"></i>
+                    Checkout via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal (sama seperti sebelumnya) -->
+    <div id="productModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 id="modalTitle" class="text-2xl font-bold"></h2>
+                    <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="h-6 w-6"></i>
+                    </button>
+                </div>
+                <img id="modalImage" class="w-full h-64 object-cover rounded-lg mb-4" alt="">
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Deskripsi</h3>
+                        <p id="modalDescription" class="text-gray-600"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Spesifikasi</h3>
+                        <ul id="modalSpecs" class="text-gray-600 space-y-1"></ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Harga</h3>
+                        <p id="modalPrice" class="text-2xl font-bold price-label"></p>
+                    </div>
+                </div>
+                <button id="modalAddToCart" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 mb-8 text-white">
+            <div class="text-center">
+                <h2 class="text-4xl font-bold mb-4">Selamat Datang di Limited Shop</h2>
+                <p class="text-xl mb-6">Temukan produk terbaik dengan checkout yang mudah dan cepat</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="https://www.itemku.com/t/limited-shop" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">
+                        Lihat Semua Produk
+                    </a>
+                    <a href="https://www.itemku.com/t/limited-shop?item=mobile-legends&page=1" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600">
+                        Mobile Legend
+                    </a>
+					 <a href="https://www.itemku.com/t/limited-shop?item=one-piece-bounty-rush&page=1" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600">
+                        One Piece: BR
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Produk Unggulan</h2>
+            <p class="text-gray-600">Temukan produk luar biasa dengan checkout yang mudah</p>
+        </div>
+
+        <div id="productsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Products will be loaded here -->
+        </div>
+    </main>
+
+    <!-- Footer dengan Menu Tambahan -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <img src="img/limitedshop.png" alt="ShopHub Logo" class="h-8 w-8 rounded">
+                        <h3 class="text-xl font-bold">Limited Shop</h3>
+                    </div>
+                    <p class="text-gray-400">Platform belanja modern dengan checkout WhatsApp yang cepat dan mudah.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Menu</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="inbox.html" class="hover:text-white">Login Email</a></li>
+                        <li><a href="https://www.itemku.com/t/limited-shop" class="hover:text-white">Produk</a></li>
+                        <li><a href="tutorial.html" class="hover:text-white">Tutorial Ganti Email</a></li>
+						<li><a href="policy.html" class="hover:text-white">Kebijakan Akun</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="https://api.whatsapp.com/send/?phone=6285155318882" class="hover:text-white">Hubungi Kami</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Follow Kami</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-lucide="instagram" class="h-6 w-6"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-lucide="facebook" class="h-6 w-6"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-lucide="twitter" class="h-6 w-6"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Limited Shop.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Format Rupiah
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(angka);
+        }
+
+        // Products data with IDR prices
+        const products = [
+            {
+                id: 1,
+                name: "MLBB Akun Level 8 BP 50,000",
+                price: 9900,
+                image: "img/ML50.jpg",
+                description: "Akun Level 8 Sudah siap langsung ranked, cocok yang ingin coba hero dan baru cepat ke master untuk bisa memakai Hero Baru.",
+                specs: [
+                    "Login Moonton",
+                    "Level 8 ( Sudah siap Ranked )",
+                    "Hero : Layla, Dyrroth, Vexana, Miya",
+                    "Battle Point : 50,000",
+                    "Tiket : 200",
+                ]
+            },
+			{
+                id: 2,
+                name: "MLBB Akun Master BP 70,000",
+                price: 22000,
+                image: "img/Master-ML.jpg",
+                description: "Akun Ranked Master sudah bisa langsung menggunakan Hero Baru, tanpa memainkan dari awal.",
+                specs: [
+                    "Login Moonton",
+                    "Level 9+ ( Sudah bisa coba Hero Baru )",
+                    "Hero : Layla, Dyrroth, Vexana, Miya",
+                    "Deteksi tabrakan",
+                    "Battle Point : 50,000",
+                    "Tiket : 200",
+					"Magic Dust : 5000+",
+					"Emblem : Pysical Level 30 - 35, yg lain Belum di Upgrade",
+                ]
+            },
+			{
+                id: 3,
+                name: "MLBB Akun Baru Level 3",
+                price: 2800,
+                image: "img/level-3-ML.jpg",
+                description: "Akun Baru Fresh level 3 hanya mengerjakan Tutorial, dan Double (x2 EXP) belum diclaim Jadi cepat naik ke Level 8.",
+                specs: [
+                    "Login Moonton",
+                    "Level 3 Fresh",
+                    "Hero : Layla, Dyrroth",
+                    "Battle Point : 14,000",
+                    "Tiket : 200",
+                ]
+            },
+            // ... (produk lainnya sama seperti sebelumnya)
+        ];
+
+        let cart = [];
+
+        // Load products
+        function loadProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = products.map(product => `
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow product-card cursor-pointer" data-id="${product.id}">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-2 line-clamp-2">${product.description}</p>
+                        <p class="text-xl font-bold price-label mb-3">${formatRupiah(product.price)}</p>
+                        <button id="modalAddToCart" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                    Info Lengkap
+						</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart functions (sama seperti sebelumnya)
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartFooter = document.getElementById('cartFooter');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-center text-gray-500 mt-8">Keranjang Anda kosong</p>';
+                cartCount.classList.add('hidden');
+                cartFooter.classList.add('hidden');
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="border rounded-lg p-4">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                            <div class="flex-1">
+                                <h3 class="font-semibold">${item.name}</h3>
+                                <p class="text-sm text-gray-600">${formatRupiah(item.price)}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="p-1 border rounded hover:bg-gray-100 update-quantity" data-id="${item.id}" data-change="-1">
+                                </button>
+                                <span class="w-8 text-center">${item.quantity}</span>
+                                <button class="p-1 border rounded hover:bg-gray-100 update-quantity" data-id="${item.id}" data-change="1">
+                                </button>
+                                <button class="p-1 text-red-500 hover:text-red-700 remove-from-cart" data-id="${item.id}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                cartTotal.textContent = formatRupiah(total);
+                cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.classList.remove('hidden');
+                cartFooter.classList.remove('hidden');
+                
+                lucide.createIcons();
+            }
+        }
+
+        function generateWhatsAppMessage() {
+            const items = cart.map(item => `${item.name} x${item.quantity} - ${formatRupiah(item.price * item.quantity)}`).join('\n');
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            return `Halo! Saya ingin memesan:\n\n${items}\n\nTotal: ${formatRupiah(total)}`;
+        }
+
+        function handleCheckout() {
+            const message = encodeURIComponent(generateWhatsAppMessage());
+            const phoneNumber = '6285155318882'; // Ganti dengan nomor WhatsApp bisnis Anda
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(url, '_blank');
+        }
+
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                document.getElementById('modalTitle').textContent = product.name;
+                document.getElementById('modalImage').src = product.image;
+                document.getElementById('modalImage').alt = product.name;
+                document.getElementById('modalDescription').textContent = product.description;
+                document.getElementById('modalPrice').textContent = formatRupiah(product.price);
+                document.getElementById('modalSpecs').innerHTML = product.specs.map(spec => `<li>• ${spec}</li>`).join('');
+                document.getElementById('modalAddToCart').dataset.id = product.id;
+                document.getElementById('productModal').classList.remove('hidden');
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            
+            // Mobile menu toggle
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Product interactions
+            document.addEventListener('click', (e) => {
+                const productCard = e.target.closest('.product-card');
+                if (productCard && !e.target.classList.contains('add-to-cart-btn')) {
+                    const productId = parseInt(productCard.dataset.id);
+                    openProductModal(productId);
+                }
+                
+                if (e.target.classList.contains('add-to-cart-btn')) {
+                    const productId = parseInt(e.target.dataset.id);
+                    addToCart(productId);
+                }
+                
+                if (e.target.classList.contains('update-quantity') || e.target.parentElement.classList.contains('update-quantity')) {
+                    const button = e.target.classList.contains('update-quantity') ? e.target : e.target.parentElement;
+                    const productId = parseInt(button.dataset.id);
+                    const change = parseInt(button.dataset.change);
+                    updateQuantity(productId, change);
+                }
+                
+                if (e.target.classList.contains('remove-from-cart') || e.target.parentElement.classList.contains('remove-from-cart')) {
+                    const button = e.target.classList.contains('remove-from-cart') ? e.target : e.target.parentElement;
+                    const productId = parseInt(button.dataset.id);
+                    removeFromCart(productId);
+                }
+            });
+            
+            // Modal and cart functions
+            document.getElementById('closeModal').addEventListener('click', () => {
+                document.getElementById('productModal').classList.add('hidden');
+            });
+
+            document.getElementById('productModal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    document.getElementById('productModal').classList.add('hidden');
+                }
+            });
+
+            document.getElementById('cartBtn').addEventListener('click', () => {
+                document.getElementById('cartSidebar').classList.remove('translate-x-full');
+            });
+
+            document.getElementById('closeCart').addEventListener('click', () => {
+                document.getElementById('cartSidebar').classList.add('translate-x-full');
+            });
+
+            document.getElementById('checkoutBtn').addEventListener('click', handleCheckout);
+            document.getElementById('modalAddToCart').addEventListener('click', (e) => {
+                const productId = parseInt(e.target.dataset.id);
+                addToCart(productId);
+                document.getElementById('productModal').classList.add('hidden');
+            });
+            
+            lucide.createIcons();
+        });
+		
+	
+    </script>
+	
+</body>
+</html>

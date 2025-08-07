@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LimitedShop -Mail.tm Client</title>
+    <link rel="icon" href="img/LimitedShop.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Header Modern */
+        .modern-header {
+            background: white;
+            padding: 0 5%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-container img {
+            height: 45px;
+            border-radius: 8px;
+        }
+        
+        .brand-name {
+            color: black;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-btn {
+            
+            color: gray;
+            border: none;
+            
+            
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .nav-btn:hover {
+            color: #2563eb;
+            transform: translateY(-2px);
+            
+        }
+        
+        .nav-btn.login-btn {
+            background: #3498db;
+        }
+        
+        .nav-btn.login-btn:hover {
+            background: #2980b9;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: black;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        
+        body {
+            background: white;
+            background-size: 400% 400%;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 90px 20px 20px; /* Padding atas untuk header */
+        }
+        
+        
+        
+        .login-container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.93);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            margin: auto;
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo i {
+            font-size: 50px;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+        }
+        
+        .logo h2 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+        
+        .logo h3 {
+            font-size: 2.0rem;
+            color: #2c3e50;
+        }
+        
+        .logo p {
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .password-container input {
+            width: 100%;
+            padding: 14px 45px 14px 14px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .password-container input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #7f8c8d;
+            background: none;
+            border: none;
+            font-size: 18px;
+            z-index: 10;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .create-account {
+            background: linear-gradient(90deg, #1abc9c, #16a085);
+            margin-top: 10px;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+        
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .status-message.loading {
+            background: #cce5ff;
+            color: #004085;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive styles */
+        @media only screen and (max-width: 768px) {
+            /* Responsive Header */
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 65px;
+                right: -100%;
+                flex-direction: column;
+                background: white;
+                width: 70%;
+                height: calc(120vh - 80px);
+                transition: 0.4s;
+                padding: 40px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo h3 {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media only screen and (max-width: 480px) {
+            .brand-name {
+                font-size: 1.3rem;
+            }
+            
+            .logo-container img {
+                height: 35px;
+            }
+            
+            .login-container {
+                padding: 25px 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+            
+            .logo h2 {
+                font-size: 1.2rem;
+            }
+            
+            .logo h3 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Modern dengan Menu -->
+    <header class="modern-header">
+        <div class="header-container">
+            <a href="index.html" class="logo-container">
+                <img src="img/LimitedShop.png" alt="LimitedShop Logo">
+                <div class="brand-name">LimitedShop</div>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-btn">
+                    <i class="fas fa-home"></i> Beranda
+                </a>
+                <a href="policy.html" class="nav-btn">
+                    <i class="fas fa-user-shield"></i> Kebijakan Akun
+                </a>
+                <a href="tutorial.html" class="nav-btn">
+                    <i class="fas fa-book"></i> Tutorial
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <div class="logo">
+            <i class="fas fa-envelope"></i>
+            <h1>Limited Shop</h1>
+            <h2>With</h2>
+            <h3>Mail.tm Login</h3>
+            <p>Tempat menerima Kode Verifikasi</p>
+        </div>
+        
+        <div id="status-message" class="status-message"></div>
+        
+        <div class="form-group">
+            <label for="email">Alamat Email</label>
+            <div class="password-container">
+                <input type="email" id="email" placeholder="email@domain.xxx">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Masukkan password">
+                <button type="button" class="toggle-password" id="togglePassword">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+        
+        <button id="login-btn" class="btn">
+            <i class="fas fa-sign-in-alt"></i> Login ke Akun
+        </button>
+        
+        <div class="footer">
+            <p>© 2025 Limited Shop.</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loginBtn = document.getElementById('login-btn');
+        const statusMessage = document.getElementById('status-message');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        
+        // Menu mobile elements
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        // Pastikan elemen ditemukan sebelum menambahkan event listener
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', togglePasswordVisibility);
+        }
+        
+        if (mobileMenuBtn && navMenu) {
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        }
+        
+        loginBtn.addEventListener('click', login);
+        
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Ubah icon mata
+            const eyeIcon = togglePassword.querySelector('i');
+            if (type === 'password') {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            } else {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            }
+        }
+        
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            navMenu.classList.toggle('active');
+            
+            // Ganti ikon menu
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+        
+        // Tutup menu mobile saat salah satu link diklik
+        const navLinks = document.querySelectorAll('.nav-menu .nav-btn');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+        
+        // Login to Mail.tm account
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                showStatus('error', 'Harap isi email dan password');
+                return;
+            }
+            
+            showStatus('loading', 'Sedang masuk ke akun Anda...');
+            
+            try {
+                // Panggil Netlify Function untuk login
+                const tokenResponse = await fetch('/.netlify/functions/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const tokenData = await tokenResponse.json();
+                
+                if (!tokenResponse.ok) {
+                    // Jika respons tidak ok, lempar error dengan pesan dari server
+                    throw new Error(tokenData.error || 'Email atau password salah');
+                }
+                
+                const authToken = tokenData.token;
+                
+                // Get account info
+                const accountResponse = await fetch('https://api.mail.tm/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (!accountResponse.ok) {
+                    throw new Error('Gagal mengambil informasi akun');
+                }
+                
+                const accountData = await accountResponse.json();
+                
+                // Save account data and token to localStorage
+                localStorage.setItem('mailtm_account', JSON.stringify(accountData));
+                localStorage.setItem('mailtm_token', authToken);
+                
+                // Redirect to inbox
+                window.location.href = 'inbox.html';
+                
+            } catch (error) {
+                showStatus('error', error.message);
+            }
+        }
+        
+        // Show status message
+        function showStatus(type, message) {
+            if (!statusMessage) return;
+            
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            
+            if (type === 'loading') {
+                statusMessage.innerHTML = `<div class="loader"></div> ${message}`;
+            }
+        }
+    </script>
+</body>
+</html>
